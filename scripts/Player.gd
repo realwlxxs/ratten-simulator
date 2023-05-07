@@ -4,7 +4,9 @@ export var speed = 400
 
 
 func _ready():
-	pass
+	var tween = $Tween
+	tween.interpolate_property(self, "speed", 100, 300, 0.2, Tween.TRANS_BACK, Tween.EASE_IN_OUT)
+	tween.start()
 
 
 func _process(delta):
