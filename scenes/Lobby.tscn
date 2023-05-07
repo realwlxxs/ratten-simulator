@@ -8,16 +8,46 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 
 [node name="Host" type="Button" parent="."]
-anchor_bottom = 1.0
-margin_right = 42.0
+anchor_left = 0.292969
+anchor_top = 0.533333
+anchor_right = 0.488281
+anchor_bottom = 0.616667
+margin_top = -3.05176e-05
 text = "Host"
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="Join" type="Button" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -35.0
+anchor_left = 0.507812
+anchor_top = 0.533333
+anchor_right = 0.703125
+anchor_bottom = 0.616667
+margin_top = -3.05176e-05
 text = "Join"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="IPAddress" type="LineEdit" parent="."]
+anchor_left = 0.292969
+anchor_top = 0.416667
+anchor_right = 0.537109
+anchor_bottom = 0.5
+text = "127.0.0.1"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Port" type="LineEdit" parent="."]
+anchor_left = 0.556641
+anchor_top = 0.416667
+anchor_right = 0.703125
+anchor_bottom = 0.5
+text = "4242"
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [connection signal="pressed" from="Host" to="." method="_on_Host_pressed"]
 [connection signal="pressed" from="Join" to="." method="_on_Join_pressed"]
