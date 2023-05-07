@@ -19,6 +19,6 @@ func _on_Join_pressed():
 
 func _player_connected(id):
 	AutoLoad.player_ids.append(id)
-	if AutoLoad.player_ids.size() > 1:
+	if AutoLoad.player_ids.size() > 0:
 		get_tree().root.add_child(preload("res://scenes/Main.tscn").instance())
 		queue_free()
