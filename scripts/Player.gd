@@ -15,30 +15,30 @@ func _process(delta):
 	if is_master:
 		$Camera2D.current = true
 
+		var mp = get_global_mouse_position()
+		rotation=mp.angle_to_point(position)
+
 		var velocity = Vector2.ZERO
 
 		if Input.is_action_pressed("move_right"):
-			$AnimatedSprite.animation = "right"
 			velocity.x += 1
 		if Input.is_action_pressed("move_left"):
-			$AnimatedSprite.animation = "left"
 			velocity.x -= 1
 		if Input.is_action_pressed("move_down"):
-			$AnimatedSprite.animation = "down"
 			velocity.y += 1
 		if Input.is_action_pressed("move_up"):
-			$AnimatedSprite.animation = "up"
 			velocity.y -= 1
 
 		if velocity.length() > 0:
-			$AnimatedSprite.play()
+			$Feet.play()
 			velocity = velocity.normalized() * speed
 		else:
-			$AnimatedSprite.stop()
+			$Feet.stop()
+			$Feet.frame = 2
 
 		position += velocity * delta
 
-		rpc_unreliable("set_animation", $AnimatedSprite.animation, $AnimatedSprite.frame)
+		rpc_unreliable("set_animation", $Body.animation, $Body.frame, $Feet.frame,rotation)
 		rpc_unreliable("set_position", position)
 
 
@@ -46,9 +46,11 @@ func initialize(id):
 	is_master = id == AutoLoad.net_id
 
 
-remote func set_animation(animation, frame):
-	$AnimatedSprite.animation = animation
-	$AnimatedSprite.frame = frame
+remote func set_animation(body_animation, body_frame,  feet_frame,rot):
+	$Body.animation = body_animation
+	$Body.frame = body_frame
+	$Feet.frame = feet_frame
+	rotation = rot
 
 
 remote func set_position(pos):
