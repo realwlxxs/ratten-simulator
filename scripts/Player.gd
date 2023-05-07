@@ -38,7 +38,7 @@ func _process(delta):
 
 		position += velocity * delta
 
-		rpc_unreliable("set_animation", $AnimatedSprite.animation)
+		rpc_unreliable("set_animation", $AnimatedSprite.animation, $AnimatedSprite.frame)
 		rpc_unreliable("set_position", position)
 
 
@@ -46,8 +46,9 @@ func initialize(id):
 	is_master = id == AutoLoad.net_id
 
 
-remote func set_animation(animation):
+remote func set_animation(animation, frame):
 	$AnimatedSprite.animation = animation
+	$AnimatedSprite.frame = frame
 
 
 remote func set_position(pos):
