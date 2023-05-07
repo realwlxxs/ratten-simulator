@@ -99,8 +99,6 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 14 )
 animation = "up"
-frame = 1
-playing = true
 __meta__ = {
 "_edit_group_": true
 }
