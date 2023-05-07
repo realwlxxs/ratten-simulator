@@ -13,6 +13,8 @@ func _ready():
 
 func _process(delta):
 	if is_master:
+		$Camera2D.current = true
+
 		var velocity = Vector2.ZERO
 
 		if Input.is_action_pressed("move_right"):
