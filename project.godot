@@ -18,6 +18,11 @@ config/icon="res://icon.png"
 
 AutoLoad="*res://scripts/AutoLoad.gd"
 
+[display]
+
+mouse_cursor/custom_image="res://assets/crosshair.png"
+mouse_cursor/custom_image_hotspot=Vector2( 8, 8 )
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

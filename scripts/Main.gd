@@ -4,6 +4,7 @@ var player = preload("res://scenes/Player.tscn")
 
 
 func _ready():
+	$Crosshair.play()
 	randomize()
 
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -27,3 +28,7 @@ func _player_connected(id):
 
 func _player_disconnected(id):
 	get_node(str(id)).queue_free()
+
+
+func _process(delta):
+	$Crosshair.position = get_global_mouse_position()

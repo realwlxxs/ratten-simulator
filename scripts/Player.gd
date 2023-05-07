@@ -16,7 +16,7 @@ func _process(delta):
 		$Camera2D.current = true
 
 		var mp = get_global_mouse_position()
-		rotation=mp.angle_to_point(position)
+		rotation = mp.angle_to_point(position)
 
 		var velocity = Vector2.ZERO
 
@@ -38,7 +38,7 @@ func _process(delta):
 
 		position += velocity * delta
 
-		rpc_unreliable("set_animation", $Body.animation, $Body.frame, $Feet.frame,rotation)
+		rpc_unreliable("set_animation", $Body.animation, $Body.frame, $Feet.frame, rotation)
 		rpc_unreliable("set_position", position)
 
 
@@ -46,7 +46,7 @@ func initialize(id):
 	is_master = id == AutoLoad.net_id
 
 
-remote func set_animation(body_animation, body_frame,  feet_frame,rot):
+remote func set_animation(body_animation, body_frame, feet_frame, rot):
 	$Body.animation = body_animation
 	$Body.frame = body_frame
 	$Feet.frame = feet_frame
