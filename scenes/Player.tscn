@@ -74,7 +74,7 @@ animations = [ {
 "frames": [ SubResource( 15 ), SubResource( 16 ) ],
 "loop": true,
 "name": "shoot_pistol",
-"speed": 10.0
+"speed": 5.0
 }, {
 "frames": [ SubResource( 17 ), SubResource( 18 ) ],
 "loop": true,
@@ -127,6 +127,9 @@ editor_draw_drag_margin = true
 repeat = true
 playback/repeat = true
 
+[node name="PistolTimer" type="Timer" parent="."]
+wait_time = 0.2
+
 [node name="UziTimer" type="Timer" parent="."]
 wait_time = 0.1
 
@@ -136,4 +139,5 @@ position = Vector2( 48, -16 )
 [node name="GunR" type="Position2D" parent="."]
 position = Vector2( 48, 16 )
 
+[connection signal="timeout" from="PistolTimer" to="." method="_on_PistolTimer_timeout"]
 [connection signal="timeout" from="UziTimer" to="." method="_on_UziTimer_timeout"]

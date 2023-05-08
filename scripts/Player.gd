@@ -59,6 +59,7 @@ func _input(event):
 					$Body.animation = "with_pistol"
 				2:
 					$Body.animation = "with_uzi"
+			$PistolTimer.stop()
 			$UziTimer.stop()
 	if event is InputEventMouseButton:
 		is_firing = event.pressed
@@ -70,6 +71,7 @@ func _input(event):
 					$Body.animation = "with_pistol"
 				2:
 					$Body.animation = "with_uzi"
+			$PistolTimer.stop()
 			$UziTimer.stop()
 		else:
 			match weapon:
@@ -77,6 +79,7 @@ func _input(event):
 					$Body.animation = "unarmed"
 				1:
 					$Body.animation = "shoot_pistol"
+					$PistolTimer.start()
 				2:
 					$Body.animation = "shoot_uzi"
 					$UziTimer.start()
@@ -109,3 +112,19 @@ func _on_UziTimer_timeout():
 		emit_signal("bullet_spawned", $GunR.global_position, rr)
 		rpc_unreliable("spawn_bullet", $GunL.global_position, rl)
 		rpc_unreliable("spawn_bullet", $GunR.global_position, rr)
+
+
+var hand = 0
+
+
+func _on_PistolTimer_timeout():
+	if is_master:
+		hand = (hand + 1) % 2
+		var rl = $GunL.global_position.angle_to_point(get_global_mouse_position()) + PI
+		var rr = $GunR.global_position.angle_to_point(get_global_mouse_position()) + PI
+		if hand == 0:
+			emit_signal("bullet_spawned", $GunL.global_position, rl)
+			rpc_unreliable("spawn_bullet", $GunL.global_position, rl)
+		else:
+			emit_signal("bullet_spawned", $GunR.global_position, rr)
+			rpc_unreliable("spawn_bullet", $GunR.global_position, rr)
