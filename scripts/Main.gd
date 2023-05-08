@@ -1,6 +1,7 @@
 extends Node2D
 
 var player = preload("res://scenes/Player.tscn")
+var bullet = preload("res://scenes/Bullet.tscn")
 
 
 func _ready():
@@ -21,6 +22,8 @@ func create_player(id):
 	a.initialize(id)
 	add_child(a)
 
+	a.connect("bullet_spawned", self, "_on_bullet_spawned")
+
 
 func _player_connected(id):
 	create_player(id)
@@ -32,3 +35,10 @@ func _player_disconnected(id):
 
 func _process(delta):
 	$Crosshair.position = get_global_mouse_position()
+
+
+func _on_bullet_spawned(pos, dir):
+	var a = bullet.instance()
+	a.position = pos
+	a.rotation = dir
+	add_child(a)

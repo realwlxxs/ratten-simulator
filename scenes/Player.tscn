@@ -8,8 +8,8 @@
 [ext_resource path="res://assets/player/player_walk.png" type="Texture" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 6.0
-height = 10.0
+radius = 14.0
+height = 16.0
 
 [sub_resource type="AtlasTexture" id=20]
 flags = 4
@@ -74,12 +74,12 @@ animations = [ {
 "frames": [ SubResource( 15 ), SubResource( 16 ) ],
 "loop": true,
 "name": "shoot_pistol",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [ SubResource( 17 ), SubResource( 18 ) ],
 "loop": true,
 "name": "shoot_uzi",
-"speed": 5.0
+"speed": 20.0
 }, {
 "frames": [ ExtResource( 5 ) ],
 "loop": true,
@@ -101,14 +101,20 @@ animations = [ {
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 4, 0 )
 shape = SubResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Feet" type="AnimatedSprite" parent="."]
+position = Vector2( 20, 1 )
 frames = SubResource( 25 )
 
 [node name="Body" type="AnimatedSprite" parent="."]
+position = Vector2( 20, 1 )
 frames = SubResource( 14 )
-animation = "shoot_uzi"
+animation = "unarmed"
 __meta__ = {
 "_edit_group_": true
 }
@@ -120,3 +126,14 @@ editor_draw_drag_margin = true
 [node name="Tween" type="Tween" parent="."]
 repeat = true
 playback/repeat = true
+
+[node name="UziTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="GunL" type="Position2D" parent="."]
+position = Vector2( 48, -16 )
+
+[node name="GunR" type="Position2D" parent="."]
+position = Vector2( 48, 16 )
+
+[connection signal="timeout" from="UziTimer" to="." method="_on_UziTimer_timeout"]

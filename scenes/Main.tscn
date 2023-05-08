@@ -49,3 +49,6 @@ tile_data = PoolIntArray( -589840, 0, 0, -589839, 0, 0, -589838, 0, 0, -589837, 
 
 [node name="Crosshair" type="AnimatedSprite" parent="."]
 frames = SubResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
