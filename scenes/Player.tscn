@@ -121,6 +121,12 @@ __meta__ = {
 
 [node name="Camera2D" type="Camera2D" parent="."]
 smoothing_enabled = true
+smoothing_speed = 1.0
+drag_margin_left = 0.4
+drag_margin_top = 0.4
+drag_margin_right = 0.4
+drag_margin_bottom = 0.4
+editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [node name="Tween" type="Tween" parent="."]

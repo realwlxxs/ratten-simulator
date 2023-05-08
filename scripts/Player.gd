@@ -84,6 +84,12 @@ func _input(event):
 					$Body.animation = "shoot_uzi"
 					$UziTimer.start()
 
+	if event is InputEventMouseMotion:
+		var tg = event.position - get_viewport().size / 2
+		var static_area = 10
+		if tg.length() > static_area:
+			$Camera2D.position = tg / 4
+
 
 func initialize(id):
 	is_master = id == AutoLoad.net_id
