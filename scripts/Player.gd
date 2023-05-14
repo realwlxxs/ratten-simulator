@@ -5,6 +5,7 @@ var is_master = false
 var speed
 var weapon = 0
 var is_firing = false
+var health = 100
 
 signal bullet_spawned(pos, dir)
 
@@ -17,41 +18,48 @@ func _ready():
 
 func _process(delta):
 	if is_master:
-		$Camera2D.current = true
-
-		var mp = get_global_mouse_position()
-		rotation = mp.angle_to_point(position)
-
-		var velocity = Vector2.ZERO
-
-		if Input.is_action_pressed("move_right"):
-			velocity.x += 1
-		if Input.is_action_pressed("move_left"):
-			velocity.x -= 1
-		if Input.is_action_pressed("move_down"):
-			velocity.y += 1
-		if Input.is_action_pressed("move_up"):
-			velocity.y -= 1
-
-		if velocity.length() > 0:
-			$Feet.play()
-			velocity = velocity.normalized() * speed
+		$Box/Label.text = str(health)
+		if health < 0:
+			$Body.animation = "death"
+			rpc_unreliable("set_alive")
+			$Feet.hide()
 		else:
-			$Feet.stop()
-			$Feet.frame = 2
+			$Camera2D.current = true
 
-		position += velocity * delta
+			var mp = get_global_mouse_position()
+			rotation = mp.angle_to_point(position)
 
-		$Body.play()
+			var velocity = Vector2.ZERO
 
-		rpc_unreliable("set_animation", $Body.animation, $Body.frame, $Feet.frame, rotation)
-		rpc_unreliable("set_position", position)
+			if Input.is_action_pressed("move_right"):
+				velocity.x += 1
+			if Input.is_action_pressed("move_left"):
+				velocity.x -= 1
+			if Input.is_action_pressed("move_down"):
+				velocity.y += 1
+			if Input.is_action_pressed("move_up"):
+				velocity.y -= 1
+
+			if velocity.length() > 0:
+				$Feet.play()
+				velocity = velocity.normalized() * speed
+			else:
+				$Feet.stop()
+				$Feet.frame = 2
+
+			position += velocity * delta
+
+			$Body.play()
+
+			rpc_unreliable("set_animation", $Body.animation, $Body.frame, $Feet.frame, rotation)
+			rpc_unreliable("set_position", position)
+			rpc_unreliable("set_health", health)
 
 
 func _input(event):
 	if event.is_action_pressed("switch"):
 		weapon = (weapon + 1) % 3
-		if not is_firing:
+		if not is_firing and health >= 0:
 			match weapon:
 				0:
 					$Body.animation = "unarmed"
@@ -59,30 +67,30 @@ func _input(event):
 					$Body.animation = "with_pistol"
 				2:
 					$Body.animation = "with_uzi"
-			$PistolTimer.stop()
-			$UziTimer.stop()
 	if event is InputEventMouseButton:
 		is_firing = event.pressed
-		if not is_firing:
-			match weapon:
-				0:
-					$Body.animation = "unarmed"
-				1:
-					$Body.animation = "with_pistol"
-				2:
-					$Body.animation = "with_uzi"
-			$PistolTimer.stop()
-			$UziTimer.stop()
-		else:
-			match weapon:
-				0:
-					$Body.animation = "unarmed"
-				1:
-					$Body.animation = "shoot_pistol"
-					$PistolTimer.start()
-				2:
-					$Body.animation = "shoot_uzi"
-					$UziTimer.start()
+		if health >= 0:
+			if not is_firing:
+				match weapon:
+					0:
+						$Body.animation = "unarmed"
+					1:
+						$Body.animation = "with_pistol"
+					2:
+						$Body.animation = "with_uzi"
+			else:
+				match weapon:
+					0:
+						$Body.animation = "unarmed"
+					1:
+						$Body.animation = "shoot_pistol"
+						$PistolTimer.start()
+					2:
+						$Body.animation = "shoot_uzi"
+						$UziTimer.start()
+	if health < 0 or not is_firing:
+		$PistolTimer.stop()
+		$UziTimer.stop()
 
 	if event is InputEventMouseMotion:
 		var tg = event.position - get_viewport().size / 2
@@ -104,6 +112,18 @@ remote func set_animation(body_animation, body_frame, feet_frame, rot):
 
 remote func set_position(pos):
 	position = pos
+
+
+remote func set_health(h):
+	health = h
+	$Box/Label.text = str(health)
+
+
+remote func set_alive():
+	$Feet.visible = health >= 0
+	if health < 0:
+		$Body.animation = "death"
+		$Body.play()
 
 
 remote func spawn_bullet(pos, dir):
@@ -134,3 +154,7 @@ func _on_PistolTimer_timeout():
 		else:
 			emit_signal("bullet_spawned", $GunR.global_position, rr)
 			rpc_unreliable("spawn_bullet", $GunR.global_position, rr)
+
+
+func _on_HurtBox_area_entered(_area):
+	health -= 10
