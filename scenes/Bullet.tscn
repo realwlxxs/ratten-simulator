@@ -15,7 +15,9 @@ animations = [ {
 radius = 2.0
 height = 6.0
 
-[node name="Bullet" type="KinematicBody2D"]
+[node name="Bullet" type="Area2D"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

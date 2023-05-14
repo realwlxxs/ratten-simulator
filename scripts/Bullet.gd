@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Area2D
 
 var speed = 1000
 
